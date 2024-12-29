@@ -1,0 +1,64 @@
+/* Avatar sprite styling */
+.character-sprites {
+  position: relative;
+  width: 140px;
+  height: 147px;
+  image-rendering: pixelated;
+  transform: scale(1);
+  margin: 0 auto;
+}
+
+.character-sprites span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 140px;
+  height: 147px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Visual Buffs */
+[class*="avatar_snowball_"],
+[class*="ghost"],
+[class*="avatar_floral_"],
+[class*="seafoam_star"] {
+  background-image: var(--sprite-url);
+}
+
+/* Base layers */
+[class*="skin_"],
+[class*="shirt_"],
+[class*="head_"],
+[class*="chair_"],
+[class*="background_"] {
+  background-image: var(--sprite-url);
+}
+
+/* Hair layers */
+[class*="hair_base_"],
+[class*="hair_bangs_"],
+[class*="hair_mustache_"],
+[class*="hair_beard_"],
+[class*="hair_flower_"] {
+  background-image: var(--sprite-url);
+}
+
+/* Equipment layers */
+[class*="armor_"],
+[class*="weapon_"],
+[class*="shield_"],
+[class*="eyewear_"],
+[class*="headAccessory_"] {
+  background-image: var(--sprite-url);
+}
+
+/* Sleep animation */
+.zzz {
+  background-image: var(--sprite-url);
+}
+
+/* Set sprite URL */
+:root {
+  --sprite-url: url('/sprites/spritesmith-main-25.png');
+}
