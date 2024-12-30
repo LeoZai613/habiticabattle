@@ -1,10 +1,12 @@
-// Base URL for assets
+// Habitica CDN base URL
+const HABITICA_CDN_BASE = 'https://habitica-assets.s3.amazonaws.com/mobileApp/images';
+
+// Boss images from Habitica's CDN
 export const getBossImage = (bossId: string): string => {
-  // Return path relative to public directory
-  return `/sprites/bosses/${bossId}.png`;
+  return `${HABITICA_CDN_BASE}/quest_bosses/${bossId}.png`;
 };
 
 // Equipment images
 export const getEquipmentImage = (itemKey: string): string => {
-  return `/equipment/${itemKey}.png`;
+  return `${HABITICA_CDN_BASE}/shop_${itemKey}.png`;
 };
