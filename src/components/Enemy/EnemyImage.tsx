@@ -1,5 +1,5 @@
 import React from 'react';
-import { getBossImage } from '../../constants/imageAssets';
+import { getBossImagePath } from '../../constants/assetPaths';
 import { Loader2 } from 'lucide-react';
 
 interface EnemyImageProps {
@@ -10,46 +10,16 @@ interface EnemyImageProps {
 export const EnemyImage: React.FC<EnemyImageProps> = ({ bossId, name }) => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  const imageUrl = getBossImage(bossId);
-
-  // Function to test if the image URL is accessible
-  const testImageUrl = React.useCallback(async () => {
-    try {
-      const response = await fetch(imageUrl, { method: 'HEAD' });
-      console.log(`[Image Debug] HEAD request for ${bossId}:`, {
-        status: response.status,
-        ok: response.ok,
-        headers: Object.fromEntries(response.headers.entries())
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-    } catch (err) {
-      console.error(`[Image Debug] Failed to check ${bossId} image:`, err);
-    }
-  }, [imageUrl, bossId]);
-
-  React.useEffect(() => {
-    testImageUrl();
-  }, [testImageUrl]);
+  const imagePath = getBossImagePath(bossId);
 
   const handleLoad = () => {
     setLoading(false);
     setError(null);
-    console.log(`[Image Debug] Successfully loaded image for ${bossId}`);
   };
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleError = () => {
     setLoading(false);
-    const imgElement = e.target as HTMLImageElement;
-    setError(imgElement.error?.message || 'Failed to load image');
-    console.error(`[Image Debug] Error loading ${bossId} image:`, {
-      error: imgElement.error,
-      src: imgElement.src,
-      naturalWidth: imgElement.naturalWidth,
-      naturalHeight: imgElement.naturalHeight
-    });
+    setError('Failed to load image');
   };
 
   return (
@@ -67,15 +37,20 @@ export const EnemyImage: React.FC<EnemyImageProps> = ({ bossId, name }) => {
           </div>
         ) : (
           <img 
-            src={imageUrl}
+            src={imagePath}
             alt={name}
             className={`w-full h-full object-contain transition-opacity duration-200 ${
               loading ? 'opacity-0' : 'opacity-100'
             }`}
-            style={{ imageRendering: 'pixelated' }}
             onLoad={handleLoad}
             onError={handleError}
           />
+        )}
+        
+        {process.env.NODE_ENV === 'development' && error && (
+          <div className="absolute bottom-0 left-0 right-0 text-xs text-red-500 bg-white/80 p-1">
+            {error}
+          </div>
         )}
       </div>
       
@@ -83,7 +58,7 @@ export const EnemyImage: React.FC<EnemyImageProps> = ({ bossId, name }) => {
       <div className="text-xs text-gray-500 break-all">
         <div>Boss ID: {bossId}</div>
         <div>Status: {loading ? 'Loading' : error ? `Error: ${error}` : 'Loaded'}</div>
-        <div>URL: {imageUrl}</div>
+        <div>URL: {imagePath}</div>
         {error && <div className="text-red-500">Error: {error}</div>}
       </div>
     </div>
